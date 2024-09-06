@@ -1,0 +1,13 @@
+[DISPLAY]
+WIDTH = 1200
+HEIGHT = 800
+FOREGROUND =  [255, 255, 255]
+BACKGROUND =  [0, 0, 0]
+FONTSIZE = 20
+
+[FRACTAL]
+DELAY = 0
+ITERATIONS = 6
+SIDES = 3  # This value should not be changed
+SIZE = 500
+RANDOM = 1
