@@ -10,8 +10,8 @@ cfg = toml.load('config.toml')
 
 WIDTH = cfg['DISPLAY']['WIDTH']
 HEIGHT = cfg['DISPLAY']['HEIGHT']
-BACKGROUND_COLOR = cfg['DISPLAY']['BACKGROUND']
-FOREGROUND_COLOR = cfg['DISPLAY']['FOREGROUND']
+BCOLOUR = cfg['DISPLAY']['BACKGROUND']
+FCOLOUR = cfg['DISPLAY']['FOREGROUND']
 SIDES = cfg['FRACTAL']['SIDES']
 HIGH_ITERATIONS = cfg['FRACTAL']['HIGH_ITERATIONS']
 LOW_ITERATIONS = cfg['FRACTAL']['LOW_ITERATIONS']
@@ -79,7 +79,7 @@ def draw_koch_snowflake(screen, points, delay=DELAY):
     total_sides = len(points) - 1
     total_length = 0
     for i in range(total_sides):
-        pygame.draw.line(screen, FOREGROUND_COLOR, points[i], points[i + 1])
+        pygame.draw.line(screen, FCOLOUR, points[i], points[i + 1])
         pygame.display.flip()
         pygame.time.delay(delay)
         segment_length = np.linalg.norm(np.array(points[i + 1]) - np.array(points[i]))
@@ -96,18 +96,18 @@ def update_progress(screen, high_sides, high_perimeter, low_sides, low_perimeter
     low_perimeter: the perimeter of the low iteration shape
     """
     font = pygame.font.SysFont('Arial', FONTSIZE)
-    text_high_sides = font.render(f'High Iterations Sides: {high_sides}', True, FOREGROUND_COLOR)
-    text_high_perimeter = font.render(f'High Iterations Perimeter: {high_perimeter:.2f}', True, FOREGROUND_COLOR)
-    text_low_sides = font.render(f'Low Iterations Sides: {low_sides}', True, FOREGROUND_COLOR)
-    text_low_perimeter = font.render(f'Low Iterations Perimeter: {low_perimeter:.2f}', True, FOREGROUND_COLOR)
-    screen.fill(BACKGROUND_COLOR, (0, 0, 400, 100))
+    text_high_sides = font.render(f'High-res Sides: {high_sides}', True, FCOLOUR)
+    text_high_perimeter = font.render(f'High-res Perimeter: {high_perimeter:.2f}', True, FCOLOUR)
+    text_low_sides = font.render(f'Low-res Sides: {low_sides}', True, FCOLOUR)
+    text_low_perimeter = font.render(f'Low-res Perimeter: {low_perimeter:.2f}', True, FCOLOUR)
+    screen.fill(BCOLOUR, (0, 0, 400, 100))
     screen.blit(text_high_sides, (10, 10))
     screen.blit(text_high_perimeter, (10, 30))
     screen.blit(text_low_sides, (10, 50))
     screen.blit(text_low_perimeter, (10, 70))
 
 # Main drawing
-screen.fill(BACKGROUND_COLOR)
+screen.fill(BCOLOUR)
 
 # Generate points for the highest number of iterations
 x, y = WIDTH // 4, HEIGHT // 2
@@ -120,7 +120,8 @@ high_points = []
 for i in range(SIDES):
     start = initial_points[i]
     end = initial_points[(i + 1) % 3]
-    high_points.extend(koch_snowflake_points(HIGH_ITERATIONS, start, end, randomise=RANDOMISE, randomness_factor=RANDOMNESS_FACTOR))
+    high_points.extend(koch_snowflake_points(HIGH_ITERATIONS, start, end,
+                    randomise=RANDOMISE, randomness_factor=RANDOMNESS_FACTOR))
 
 # Draw the high iteration shape
 high_sides, high_perimeter = draw_koch_snowflake(screen, high_points)
